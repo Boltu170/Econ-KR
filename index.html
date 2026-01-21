@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introduction to Economics Quiz - Part 2</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen py-8">
+    <div id="root"></div>
+
+```
+<script type="text/babel">
+    const { useState } = React;
+    
+    const CheckCircle = ({ className, size }) => (
+        <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+        </svg>
+    );
+
+    const XCircle = ({ className, size }) => (
+        <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="15" y1="9" x2="9" y2="15"></line>
+            <line x1="9" y1="9" x2="15" y2="15"></line>
+        </svg>
+    );
+
+    const RotateCcw = ({ size }) => (
+        <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <polyline points="1 4 1 10 7 10"></polyline>
+            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+        </svg>
+    );
+
+    const Quiz = () => {
+        const [currentQuestion, setCurrentQuestion] = useState(0);
+        const [selectedAnswer, setSelectedAnswer] = useState(null);
+        const [showExplanation, setShowExplanation] = useState(false);
+        const [score, setScore] = useState(0);
+        const [quizComplete, setQuizComplete] = useState(false);
+
+        const questions = [
+            {
+                question: "A city implements a 'congestion charge' for driving in the city center to reduce traffic. However, wealthier drivers continue driving while lower-income workers who need their cars for work switch to slower public transport. Which economic concept does this BEST illustrate?",
+                options: [
+                    "This shows scarcity because road space is limited",
+                    "This is a distribution question - the policy affects who gets access to road space based on ability to pay",
+                    "This demonstrates opportunity cost for the workers who switch to public transport",
+                    "This is purely a technology question about transport methods"
+                ],
+                correct: 1,
+                explanation: "While scarcity and opportunity cost are present, the key insight from the lecture is that this is fundamentally a DISTRIBUTION question. The policy changes WHO gets access to the roads based on their economic resources, not the total number of people using them. The lecture emphasizes that distribution questions ask 'who gets what' - here, road access goes to those who can afford the charge."
+            },
+            {
+                question: "A researcher states: 'The data shows owner-occupation peaked at 71% in 2003 and fell to 63% by 2016. Therefore, government policy should prioritize home ownership.' What is the problem with this reasoning?",
+                options: [
+                    "The statistics are incorrect",
+                    "The conclusion confuses positive and normative statements - the data is factual but the 'should' involves a value judgment",
+                    "This is a microeconomic issue being treated as macroeconomic",
+                    "The researcher hasn't considered opportunity costs"
+                ],
+                correct: 1,
+                explanation: "The lecture strongly emphasizes distinguishing positive (what IS) from normative (what SHOULD be). The first part is positive - factual data. But 'should prioritize' is normative - a value judgment. You can't logically derive a 'should' from an 'is' without adding values. The data doesn't tell us whether this trend is good or bad."
+            },
+            {
+                question: "Since 1971, UK housing stock grew faster than population, yet housing became less affordable. A student argues: 'This proves supply and demand theory is wrong.' What is the flaw in this argument?",
+                options: [
+                    "The student is correct - supply and demand theory cannot explain this",
+                    "The student is confusing correlation with causation",
+                    "The student is ignoring that housing markets are influenced by WHO controls supply (actors), rules (institutions/power), and distribution, not just total quantities",
+                    "The student hasn't accounted for vacant homes in the calculation"
+                ],
+                correct: 2,
+                explanation: "The lecture's key message is that economics isn't just about supply and demand - it's about the five questions including actors (who builds), institutions/power (what rules exist), and distribution (who gets what). Private developers replacing local authorities, deregulation of rentals, and financialization changed the market structure. Total supply isn't the only factor determining affordability."
+            },
+            {
+                question: "You're analyzing two policy proposals: (A) 'Unemployment has risen from 3% to 7%' and (B) 'The government must intervene to create jobs.' A third analyst says: (C) 'Rising unemployment will reduce consumer spending, potentially triggering a recession.' How should these be classified?",
+                options: [
+                    "All three are positive statements",
+                    "A is positive, B is normative, C is positive",
+                    "A and C are positive, B is normative",
+                    "A is positive, B and C are both normative"
+                ],
+                correct: 2,
+                explanation: "A is clearly positive (factual data). B contains 'must' - a value judgment about what should happen (normative). C is trickier but still positive - it's a prediction about cause and effect, a factual claim about what WILL happen, not what SHOULD happen. The lecture distinguishes facts about the world (positive) from value judgments (normative)."
+            },
+            {
+                question: "A smartphone manufacturer decides to produce 1 million premium phones at £1,000 instead of 2 million budget phones at £200. Which of the five economic questions does this decision PRIMARILY address, and what is the trade-off?",
+                options: [
+                    "Distribution question; trade-off is between premium and budget customers",
+                    "Priorities question; trade-off is between producing fewer expensive items versus more affordable items",
+                    "Technology question; trade-off is between different production methods",
+                    "Actors question; trade-off is between manufacturer profit and consumer access"
+                ],
+                correct: 1,
+                explanation: "This is primarily the PRIORITIES question: 'What should we produce and how much?' The firm is deciding WHAT type of product and HOW MUCH. The trade-off is producing fewer premium goods versus more affordable ones. While distribution (who gets them) is affected, the decision itself is about production priorities. The lecture emphasizes priorities as 'what and how much to make.'"
+            },
+            {
+                question: "If studying economics for 3 hours means you can't work a shift earning £30, can't attend a friend's birthday (worth £50 to you in happiness), and can't sleep (worth £20 to you in rest), what is the opportunity cost of studying?",
+                options: [
+                    "£30 (the wages)",
+                    "£100 (total of all alternatives)",
+                    "£50 (the birthday party, since it's the highest value alternative)",
+                    "£80 (birthday plus sleep, the two most valuable alternatives)"
+                ],
+                correct: 2,
+                explanation: "Opportunity cost is the value of the NEXT BEST alternative - the single most valuable thing you give up. The lecture defines it as 'the value of the next best alternative you give up when making a choice.' Here, the birthday party is worth £50 (most valuable), so that's your opportunity cost. You don't add up all alternatives - only the best one you're sacrificing."
+            },
+            {
+                question: "A government introduces a policy requiring all new homes to include solar panels (cost: £8,000 per home). Builders respond by reducing the number of bedrooms in new builds to maintain the same total price. This is an example of:",
+                options: [
+                    "A perverse incentive, because the policy achieved the opposite of environmental goals",
+                    "An unintended consequence, because the policy led to smaller homes rather than the intended environmental benefit alone",
+                    "A trade-off between environmental goals and housing quality",
+                    "Scarcity, because resources for building are limited"
+                ],
+                correct: 1,
+                explanation: "This is an UNINTENDED CONSEQUENCE - an unexpected result of the policy. The policy wasn't designed to make homes smaller, but that's what happened. It's NOT a perverse incentive because the environmental goal (solar panels) was still achieved; it just had an unexpected side effect. The lecture defines unintended consequences as 'unexpected results of policies' and perverse incentives as policies that 'accidentally encourage the opposite of what you want.'"
+            },
+            {
+                question: "The lecture shows that in 1969, local authorities built a large proportion of housing, but now private enterprise builds almost everything. Why does this shift in 'actors' matter economically?",
+                options: [
+                    "Government is always less efficient than private enterprise",
+                    "Different actors have different objectives - local authorities may prioritize affordable housing while private developers prioritize profit, leading to different outcomes",
+                    "Private builders use better technology than government",
+                    "This shift explains why there are more vacant homes"
+                ],
+                correct: 1,
+                explanation: "The lecture's student accommodation example illustrates this: when universities build halls, they might prioritize affordability; when private developers build, they prioritize profit. Different actors have different incentives and objectives, which shapes market outcomes. The lecture emphasizes that WHO is in charge matters for economic results - it's not about efficiency claims, but about different goals."
+            },
+            {
+                question: "A student plans to spend £50 on either: Option A (certain): receive textbooks worth £50. Option B (gamble): 50% chance of concert tickets worth £100, 50% chance of nothing. The student chooses Option A. What does this reveal beyond simple opportunity cost?",
+                options: [
+                    "The opportunity cost of choosing A is £50 (the expected value of B)",
+                    "The student values certainty over risk, meaning the opportunity cost includes both the money AND the preference for security",
+                    "This demonstrates scarcity because the student can't afford both",
+                    "The opportunity cost is £100 because that's what they might have won"
+                ],
+                correct: 1,
+                explanation: "This goes deeper than basic opportunity cost. The expected monetary value of B is £50 (0.5×£100 + 0.5×£0), same as A. But the student chose A, revealing they value certainty. The lecture's backpacking example emphasizes opportunity cost isn't just money - it's about what alternatives are WORTH to you personally, including subjective factors like risk preference and experiences."
+            },
+            {
+                question: "Which scenario would a macroeconomist study rather than a microeconomist?",
+                options: [
+                    "How Samsung decides how many Galaxy phones to produce this quarter",
+                    "Why the UK's overall productivity growth has slowed from 2.5% annually to 0.5% annually across all sectors",
+                    "How minimum wage affects employment at a specific restaurant chain",
+                    "Why housing is unaffordable in London specifically"
+                ],
+                correct: 1,
+                explanation: "Macroeconomics studies economy-wide patterns and aggregates. Productivity growth 'across all sectors' affecting the entire UK economy is a macro issue. The lecture defines macro as 'the big picture - aggregate measures like inflation, unemployment, economic growth.' Samsung's production (one firm), one restaurant chain's employment, and London's specific housing market are all microeconomic - about individual markets or actors."
+            },
+            {
+                question: "A hospital introduces a £10 fee for missed appointments to reduce no-shows. Instead, some low-income patients stop booking appointments altogether (worsening their health), while some wealthy patients treat the £10 as a 'cancellation option' and miss appointments more freely. What combination of concepts does this illustrate?",
+                options: [
+                    "Opportunity cost and scarcity only",
+                    "A perverse incentive (wealthy patients) and an unintended consequence (low-income patients avoiding appointments)",
+                    "A distribution problem and positive economics",
+                    "Microeconomics and normative statements"
+                ],
+                correct: 1,
+                explanation: "This shows BOTH concepts from the lecture: (1) Perverse incentive - for wealthy patients, the fee accidentally encourages MORE missed appointments by creating a 'purchase option,' the opposite of what was intended. (2) Unintended consequence - the policy unexpectedly deterred low-income patients from booking at all. The lecture defines perverse incentives as encouraging opposite behavior and unintended consequences as unexpected results."
+            },
+            {
+                question: "The lecture presents data showing housing stock grew faster than population since 1971, and there are 1.6 million vacant homes. Yet rental costs as a percentage of income have risen dramatically. What does this most strongly challenge?",
+                options: [
+                    "The assumption that housing problems are mainly about insufficient total supply",
+                    "The concept of opportunity cost in housing markets",
+                    "Positive versus normative distinctions in housing policy",
+                    "The relevance of microeconomics to housing issues"
+                ],
+                correct: 0,
+                explanation: "The lecture uses this data to make a crucial point: 'Do we not have enough houses, OR do we have enough houses but they're distributed unfairly? The data suggests it's a distribution problem, not a shortage.' This challenges the common assumption that building more houses alone will solve affordability. The classroom chair analogy reinforces this - 30 students, 35 chairs, but 5 complaining because of how chairs are allocated, not chair shortage."
+            },
+            {
+                question: "You invest 100 hours building a business that fails, earning £0. Your friend worked 100 hours at £15/hour earning £1,500. Beyond the £1,500 wage difference, what additional opportunity cost did you face that economics particularly emphasizes?",
+                options: [
+                    "The £1,500 you could have earned working",
+                    "The time you spent (100 hours)",
+                    "The value of what those 100 hours could have produced if spent differently - potentially including experience, skills, relationships, or other pursuits worth more than £1,500 to you",
+                    "There is no additional opportunity cost beyond the wages"
+                ],
+                correct: 2,
+                explanation: "The lecture emphasizes that opportunity cost isn't just money: 'The money isn't the only cost - it's what you give up!' Using the summer placement example, it notes the opportunity cost includes experiences, not just income. Those 100 hours could have been spent learning other skills, building different relationships, or having experiences that might have been worth more than £1,500 to your future. Economics values all alternatives, not just wages."
+            },
+            {
+                question: "Consider this policy sequence: (1) Government sells council houses cheaply to tenants (changing actors), (2) Many buyers later sell to private landlords (changing distribution), (3) Private rents rise significantly (outcome). Which economic lesson from the lecture does this best illustrate?",
+                options: [
+                    "Scarcity is the fundamental economic problem",
+                    "Changes in actors and institutions/power structures produce different economic outcomes even with the same physical housing stock",
+                    "Opportunity costs always involve trade-offs",
+                    "Microeconomic decisions don't affect macroeconomic outcomes"
+                ],
+                correct: 1,
+                explanation: "The lecture's conclusion about housing states: 'The housing crisis isn't about shortage - it's about WHO builds and controls housing, and WHAT rules they operate under. Power and institutions matter for economic outcomes.' This policy sequence changed actors (from public to private control) and rules (from public to private rental markets), producing different outcomes from the same housing stock. The five questions framework shows actors and institutions matter, not just quantities."
+            },
+            {
+                question: "A university faces this choice: Spend £5 million on either (A) a new sports facility that 30% of students will use regularly, or (B) hiring 50 more lecturers reducing class sizes for 100% of students. Students vote 60% for the sports facility. What does this scenario most clearly demonstrate about economic decision-making?",
+                options: [
+                    "This shows scarcity and opportunity cost, but the choice reveals priorities aren't determined by maximum benefit to most people - they involve preferences, values, and the power to decide",
+                    "This is simply a distribution question about who gets the benefit",
+                    "The opportunity cost is clearly the 50 lecturers since more students would benefit",
+                    "This demonstrates perverse incentives in university voting"
+                ],
+                correct: 0,
+                explanation: "The lecture opens with this type of university decision to illustrate scarcity and choice. But it goes deeper: the lecture emphasizes the 'institutions/power' question - 'Who makes decisions and what rules exist?' Here, student voting power determined priorities, even though fewer students benefit. This shows economics isn't just optimization - it's about who has power to decide, what values matter, and how preferences shape resource allocation. Option cost is present, but the key insight is about decision-making power and priorities."
+            }
+        ];
+
+        const handleAnswer = (index) => {
+            setSelectedAnswer(index);
+            setShowExplanation(true);
+            if (index === questions[currentQuestion].correct) {
+                setScore(score + 1);
+            }
+        };
+
+        const handleNext = () => {
+            if (currentQuestion < questions.length - 1) {
+                setCurrentQuestion(currentQuestion + 1);
+                setSelectedAnswer(null);
+                setShowExplanation(false);
+            } else {
+                setQuizComplete(true);
+            }
+        };
+
+        const resetQuiz = () => {
+            setCurrentQuestion(0);
+            setSelectedAnswer(null);
+            setShowExplanation(false);
+            setScore(0);
+            setQuizComplete(false);
+        };
+
+        const getScoreColor = () => {
+            const percentage = (score / questions.length) * 100;
+            if (percentage >= 80) return 'text-green-600';
+            if (percentage >= 60) return 'text-yellow-600';
+            return 'text-red-600';
+        };
+
+        if (quizComplete) {
+            const percentage = Math.round((score / questions.length) * 100);
+            return (
+                <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-lg">
+                    <div className="text-center">
+                        <h2 className="text-3xl font-bold mb-4">Quiz Complete!</h2>
+                        <div className={`text-6xl font-bold mb-4 ${getScoreColor()}`}>
+                            {score}/{questions.length}
+                        </div>
+                        <p className="text-xl mb-2">You scored {percentage}%</p>
+                        <p className="text-gray-600 mb-6">
+                            {percentage >= 80 && "Outstanding! You've mastered the advanced concepts and can apply economic thinking critically."}
+                            {percentage >= 60 && percentage < 80 && "Good work! You understand most concepts. Review the explanations for deeper insights."}
+                            {percentage < 60 && "This quiz is challenging! Review the lecture carefully and focus on understanding how concepts apply in complex scenarios."}
+                        </p>
+                        <button
+                            onClick={resetQuiz}
+                            className="bg-blue-600 text-white px-6 py-3 rounded-lg flex items-center gap-2 mx-auto hover:bg-blue-700 transition"
+                        >
+                            <RotateCcw size={20} />
+                            Retake Quiz
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+
+        const q = questions[currentQuestion];
+
+        return (
+            <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-lg">
+                <div className="mb-4">
+                    <h1 className="text-2xl font-bold text-center text-blue-600 mb-2">Part 2: Advanced Application</h1>
+                    <p className="text-center text-gray-600 text-sm mb-4">These questions require deeper understanding and critical thinking</p>
+                </div>
+                
+                <div className="mb-6">
+                    <div className="flex justify-between items-center mb-2">
+                        <span className="text-sm text-gray-600">
+                            Question {currentQuestion + 1} of {questions.length}
+                        </span>
+                        <span className="text-sm font-semibold text-blue-600">
+                            Score: {score}/{questions.length}
+                        </span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div
+                            className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                            style={{ width: `${((currentQuestion) / questions.length) * 100}%` }}
+                        />
+                    </div>
+                </div>
+
+                <h2 className="text-xl font-bold mb-6 leading-relaxed">{q.question}</h2>
+
+                <div className="space-y-3 mb-6">
+                    {q.options.map((option, index) => {
+                        let buttonClass = "w-full text-left p-4 rounded-lg border-2 transition-all ";
+                        
+                        if (selectedAnswer === null) {
+                            buttonClass += "border-gray-300 hover:border-blue-400 hover:bg-blue-50";
+                        } else if (index === q.correct) {
+                            buttonClass += "border-green-500 bg-green-50";
+                        } else if (index === selectedAnswer) {
+                            buttonClass += "border-red-500 bg-red-50";
+                        } else {
+                            buttonClass += "border-gray-300 opacity-50";
+                        }
+
+                        return (
+                            <button
+                                key={index}
+                                onClick={() => !showExplanation && handleAnswer(index)}
+                                disabled={showExplanation}
+                                className={buttonClass}
+                            >
+                                <div className="flex items-center justify-between">
+                                    <span className="text-sm leading-relaxed">{option}</span>
+                                    {showExplanation && index === q.correct && (
+                                        <CheckCircle className="text-green-600 flex-shrink-0 ml-2" size={24} />
+                                    )}
+                                    {showExplanation && index === selectedAnswer && index !== q.correct && (
+                                        <XCircle className="text-red-600 flex-shrink-0 ml-2" size={24} />
+                                    )}
+                                </div>
+                            </button>
+                        );
+                    })}
+                </div>
+
+                {showExplanation && (
+                    <div className="mb-6 p-4 bg-blue-50 border-l-4 border-blue-600 rounded">
+                        <h3 className="font-semibold mb-2 text-blue-900">Explanation:</h3>
+                        <p className="text-gray-700 text-sm leading-relaxed">{q.explanation}</p>
+                    </div>
+                )}
+
+                {showExplanation && (
+                    <button
+                        onClick={handleNext}
+                        className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
+                    >
+                        {currentQuestion < questions.length - 1 ? 'Next Question' : 'See Results'}
+                    </button>
+                )}
+            </div>
+        );
+    };
+
+    ReactDOM.render(<Quiz />, document.getElementById('root'));
+</script>
+```
+
+</body>
+</html>
